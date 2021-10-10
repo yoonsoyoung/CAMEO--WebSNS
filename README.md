@@ -28,13 +28,12 @@
 - 팀원 고소영 : 백엔드(SpringBoot)
 - 팀원 박소현 : 백엔드(SpringBoot)
 - 팀원 박준수 : 프론트엔드(Vuejs)
-- 팀원 윤소영: 프론트엔드(Vuejs)
+- 팀원 윤소영 : 프론트엔드(Vuejs)
 
 ### 🗓️구현 기간
 
 2021.7.12 - 8.20(6주)
 
---
 
 ---
 
@@ -48,6 +47,9 @@
 1.2. 주요 기능
 
 
+1.3. UCC
+
+[![CAMEO UCC](https://img.youtube.com/vi/62YA8OkWUvw/0.jpg)](https://www.youtube.com/watch?v=62YA8OkWUvw)
 
 
 ---
