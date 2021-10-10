@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.ScrapDao">
+
+	<!-- 스크랩 등록 -->
+	<insert id="insertScrap" parameterType="map" useGeneratedKeys="true" keyProperty="scrap_id">
+		INSERT INTO
+		scrap(scrap_user_email, scrap_pheed_id)
+		values
+		(#{scrap_user_email},
+		#{scrap_pheed_id})
+	</insert>
+
+	<!-- 스크랩 조회 -->
+	<select id="getAllScrap" parameterType="String"
+		resultType="int">
+		SELECT scrap_pheed_id FROM scrap 
+		WHERE scrap_user_email = #{scrap_user_email}
+	</select>
+	
+	<select id="getId" parameterType="map"
+		resultType="int">
+		SELECT scrap_id FROM scrap WHERE scrap_user_email = #{scrap_user_email} AND scrap_pheed_id = #{scrap_pheed_id}
+		</select>
+
+	<!-- 스크랩 취소 -->
+	<delete id="deleteScrap" parameterType="int">
+		DELETE FROM scrap WHERE
+		scrap_id = #{scrap_id}
+	</delete>
+
+
+</mapper>
+

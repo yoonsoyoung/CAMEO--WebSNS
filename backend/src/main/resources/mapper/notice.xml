@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.NoticeDao">
+
+	<!-- 공지사항 만들기 -->
+	<insert id="insertNotice" parameterType="map">
+		INSERT INTO notice
+		(notice_title,
+		notice_content, notice_pic, notice_date)
+		VALUES
+		(#{notice_title}, #{notice_content},
+		#{notice_pic}, now())
+	</insert>
+	
+	<!-- 공지사항 조회 -->
+	<select id="getNotice" resultType="Notice">
+		SELECT * FROM notice WHERE notice_id = #{notice_id}
+	</select>
+
+	<!-- 공지사항 리스트 조회 -->
+	<!-- Dto -->
+	<select id="getNoticeList" resultType="Notice">
+		SELECT * FROM notice
+	</select>
+
+	<!-- 공지사항 삭제 -->
+	<delete id="deleteNotice" parameterType="int">
+		DELETE FROM notice
+		WHERE
+		notice_id = #{notice_id}
+	</delete>
+
+	<!-- 공지사항 수정 -->
+	<update id="updateNotice" parameterType="map">
+		UPDATE notice SET
+		notice_content = #{notice_content}
+		WHERE notice_id = #{notice_id}
+	</update>
+	
+	<!-- 공지사항 notice_id 얻어오기 -->
+	<select id="getNotice_id" resultType="int">
+		select 
+			notice_id
+		from
+			notice
+		where
+			notice_title = #{notice_title}
+	
+	</select>
+
+
+</mapper>
+    

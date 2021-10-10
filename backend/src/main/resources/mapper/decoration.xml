@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.DecorationDao">
+
+	<!-- 그러니까 데이터를 저장할때 내가  
+	decoration table만들고, 
+	속성 값 만들고
+	string으로 들어온거 json형식으로 바꿔주는 서비스 만들고
+	service에서 insert 이미지 시켜주고 
+	
+	불러오기까지 하면되겠다
+	
+	불러올때는 user에 user_total 점수를 통해서 
+	필터 처리
+	-->
+	
+	<sql id ="attachColumns">
+		  
+		originalName
+		, saveName
+		, size
+		, insert_time
+	</sql>
+	<!--관리자를 통한 데이터 삽입-->
+	<insert id ="insertPic" parameterType="java.util.List">
+		INSERT INTO decoration(
+			<include refid="attachColumns"/>
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			 
+			#{item.originalName}
+			, #{item.saveName}
+			, #{item.size}
+			, NOW()	
+		)
+		
+		
+		</foreach>
+	</insert>
+	
+	
+	<!-- userid 에 따른 user_total_score -->
+	<select id = "selectScore" parameterType="String" resultType="int">
+	select user_total_score
+	from user
+	where user_id = #{user_id}
+	</select>
+	
+	<!-- totalscore에 따른 decoration 이미지 불러오기 -->
+	
+	
+	<!-- 1번  -->
+	<select id = "selectPic" parameterType="int" resultType="Decoration">
+	select * from decoration
+	where decoration_id = #{user_total_score};
+	
+	</select>
+	
+</mapper>

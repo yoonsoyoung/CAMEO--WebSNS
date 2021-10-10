@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.NewsPheedDao">
+
+	<!-- 등록 -->
+	<insert id="insertPheed" parameterType="Pheed" useGeneratedKeys="true" keyProperty="pheed_id">
+		INSERT INTO
+		pheed(pheed_user_id, pheed_title, pheed_content)
+		values
+		(#{pheed_user_id}, #{pheed_title}, #{pheed_content})
+	</insert>
+
+	<!-- 목록 -->
+	<!-- 이게 내가 팔로우한 사용자만 피드에서 볼 수 있어야 하는거니까 -->
+	<!-- 우선 내가 팔로잉 중인 리스트를 뽑고 -->
+	<!-- 조인: pheed 테이블에서 pheed_user_id가 그 리스트인거 전부 리턴 -->
+	<select id="selectPheedList" parameterType="String"
+		resultType="Pheed">
+		SELECT * FROM pheed
+		WHERE pheed_user_id IN 
+		(SELECT followers FROM follow 
+		WHERE following = #{following}
+		AND isMute = FALSE)
+		ORDER BY pheed_date DESC
+	</select>
+	
+	<!-- 피드 조회 -->
+	<select id="selectPheed" parameterType="int" resultType="Pheed">
+		SELECT * FROM pheed
+		WHERE pheed_id = #{pheed_id}
+	</select>
+	<!-- 삭제 -->
+	<delete id="deletePheed" parameterType="int">
+		DELETE FROM pheed WHERE
+		pheed_id = #{pheed_id}
+	</delete>
+
+	<!-- 수정 -->
+	<update id="updatePheed" parameterType="Pheed">
+		UPDATE pheed SET
+		pheed_title = #{pheed_title},
+		pheed_content = #{pheed_content}
+		WHERE pheed_id = #{pheed_id}
+	</update>
+
+	<select id="selectAllPheed" resultType="Pheed">
+		SELECT * FROM pheed
+	</select>
+	
+	<select id="selectPheedByEmail" parameterType="String" resultType="Pheed">
+		SELECT * FROM pheed WHERE pheed_user_id = #{pheed_user_id}
+	</select>
+</mapper>
+

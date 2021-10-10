@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.FollowDao">
+
+	<!-- 팔로잉 리스트 조회 -->
+	<select id="selectFollowersList" parameterType="String"
+		resultType="Follow">
+		SELECT *
+		FROM follow
+		WHERE following = #{following}
+	</select>
+
+	<!-- 팔로워 리스트 조회 -->
+	<select id="selectFollowingList" parameterType="String"
+		resultType="Follow">
+		SELECT *
+		FROM follow
+		WHERE followers = #{followers}
+	</select>
+
+	<!-- 팔로잉 요청 보내기 -->
+	<insert id="sendFollowReq" parameterType="map">
+		INSERT INTO
+		follow(following, temp_followers)
+		VALUES (#{following},
+		#{temp_followers})
+	</insert>
+
+	<!-- 팔료잉 요청 리스트 조회 -->
+	<select id="getFollowReqList" parameterType="String"
+		resultType="String">
+		SELECT following FROM follow
+		WHERE temp_followers =
+		#{temp_followers}
+	</select>
+
+	<!-- 팔로잉 특정 관계 셀렉 -->
+	<select id="getFollowReq" parameterType="map" resultType="int">
+		SELECT
+		follow_id FROM follow
+		WHERE temp_followers = #{temp_followers}
+		AND
+		following = #{following}
+	</select>
+
+	<!-- 팔로잉 팔로워 맞팔관계 저장 -->
+	<update id="updateFollowReqEO" parameterType="map">
+		UPDATE follow SET
+		followers = #{followers},
+		temp_followers = NULL,
+		isFollowingEachOther =
+		TRUE
+		WHERE follow_id = #{follow_id}
+	</update>
+
+	<!-- 팔로잉 팔로워 NOT FOLLOWING EACH OTHER 관계 저장 -->
+	<update id="updateFollowReqNEO" parameterType="map">
+		UPDATE follow SET
+		followers = #{followers},
+		temp_followers = NULL
+		WHERE follow_id =
+		#{follow_id}
+	</update>
+
+	<!-- 팔로우 요청 삭제 -->
+	<delete id="deleteFollowReq" parameterType="int">
+		DELETE FROM follow
+		WHERE follow_id = #{follow_id}
+	</delete>
+
+
+	<!-- 언팔로우 -->
+	<delete id="deleteFollow" parameterType="map">
+		DELETE FROM follow
+		WHERE
+		following = #{following}
+		AND followers = #{followers}
+	</delete>
+
+	<!-- 팔로잉 요청 이미 한 경우 중복 체크 -->
+	<select id="chkFollowReq" parameterType="map" resultType="int">
+		SELECT
+		COUNT(*) FROM follow
+		WHERE following = #{following}
+		AND temp_followers =
+		#{temp_followers}
+	</select>
+
+	<update id="chkFollowEachOther" parameterType="map">
+		UPDATE follow SET
+		isFollowingEachOther = TRUE
+		WHERE following = #{following}
+		AND followers
+		= #{followers}
+	</update>
+
+	<update id="unFollowEachOther" parameterType="map">
+		UPDATE follow SET
+		isFollowingEachOther = FALSE
+		WHERE following = #{following}
+		AND
+		followers = #{followers}
+	</update>
+
+	<select id="chkThisPersonFMe" parameterType="map"
+		resultType="int">
+		SELECT COUNT(*) FROM follow
+		WHERE following= #{followers}
+		AND followers = #{following}
+	</select>
+
+	<select id="chkIFThisPerson" parameterType="map"
+		resultType="int">
+		SELECT COUNT(*) FROM follow
+		WHERE following = #{following}
+		AND followers = #{followers}
+	</select>
+
+	<select id="selectFollowRelation" parameterType="map"
+		resultType="int">
+		SELECT follow_id FROM follow
+		WHERE following = #{following}
+		AND followers = #{followers}
+	</select>
+
+	<update id="muteFollowers" parameterType="int" >
+		UPDATE follow SET
+		isMute = true
+		WHERE follow_id = #{follow_id}
+	</update>
+
+	<update id="unmuteFollowers" parameterType="int">
+		UPDATE follow SET
+		isMute = false
+		WHERE follow_id = #{follow_id}
+	</update>
+	
+	<delete id="cancelFollowReq" parameterType="map">
+		DELETE FROM follow
+		WHERE following = #{following} AND temp_followers=#{following}
+	</delete>
+	
+</mapper>

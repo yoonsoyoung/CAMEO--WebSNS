@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.CafeDao">
+	<select id="findCafe" parameterType="String" resultType="Cafe">
+		SELECT * FROM cafe
+		WHERE cafe_name LIKE '%${cafe_name}'
+	</select>
+
+	<select id="getAllCafe" parameterType="String" resultType="Cafe">
+		SELECT * FROM cafe
+	</select>
+	
+	<select id="findCafePlace" parameterType="String" resultType="Cafe">
+		SELECT * FROM cafe
+		WHERE address LIKE CONCAT ('%',#{address},'%')
+	</select>
+</mapper>
+   

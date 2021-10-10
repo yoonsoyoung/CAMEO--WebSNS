@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.curation.dao.HelpSelectDao">
+
+	<!-- 도움이 돼요 plus -->
+	<update id="updateHelpPlus" parameterType="map">
+		update 
+			user 
+		set
+			user_total_score = user_total_score + 5
+		where
+			user_id = #{user_id}
+			or
+			user_email = #{user_email}
+	
+	</update>
+	
+	<!-- 도움이 안돼요 minus -->
+	<update id="updateHelpMinus" parameterType="map">
+		update 
+			user 
+		set
+			user_total_score = user_total_score - 2
+		where
+			user_id = #{user_id}
+			or
+			user_email = #{user_email}
+	
+	
+	</update>
+</mapper>

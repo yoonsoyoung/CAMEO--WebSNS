@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.PheedCommentDao">
+	<!-- 댓글 갯수 -->
+	<select id="selectCommentCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) 
+		FROM pheedComment
+		WHERE pheedId = #{pheedId}
+	</select>
+	
+	<!-- 작성 -->
+	<insert id="insertComment" parameterType="PheedComment"  useGeneratedKeys="true" keyProperty="pheedCommentId">
+		INSERT INTO pheedComment(userEmail, pheedId, content, insertTime)
+		values(#{userEmail}, #{pheedId}, #{content}, NOW())
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateComment" parameterType="PheedComment">
+		UPDATE pheedComment SET 
+			content = #{content}
+		WHERE pheedCommentId = #{pheedCommentId}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM pheedComment
+		WHERE pheedCommentId = #{pheedCommentId}
+	</delete>
+	
+	<!-- 목록 -->
+	<select id="getAllComment" parameterType="int" resultType="PheedComment">
+		SELECT * FROM pheedComment WHERE pheedId = #{pheedId}
+	</select>
+</mapper>

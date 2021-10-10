@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.GoodDao">
+
+	<!-- 좋아요 insert my id, user id, pheed title이 넘어와야한다-->
+	<insert id="insertGood" parameterType="map">
+		insert into
+		good(good_my_email, good_user_email, good_pheed_id,good_pheed_title, good_tmp)
+		values(#{good_my_email}, #{good_user_email}, #{good_pheed_id},#{good_pheed_title}, 1)
+	</insert>
+	
+	
+	<!-- 좋아요 목록보여주기 -->
+	<select id="getGoodReqList" parameterType="String" resultType="Good">
+	
+		select * 
+		from good
+		where good_my_email = #{good_my_email}
+	</select>
+	
+	
+	<!-- 좋아요 취소 상대방의 user_email, pheed_id 두개가 동시에 맞는다면 없애주기-->
+	<delete id="deleteGood" parameterType="int" >
+		delete from good
+		where
+		good_id = #{good_id}
+		
+	</delete>
+	
+	<select id="ida" parameterType="map" resultType="int">
+		select good_id
+		from good
+		where good_my_email = #{good_my_email} and
+		good_pheed_id = #{good_pheed_id}
+
+	</select>
+	
+	<select id="countGood" resultType="int">
+		select count(good_pheed_id)
+		from good
+		where good_pheed_id = #{good_pheed_id}
+	</select>
+	
+	<!-- pheed title 찾기 -->
+	<select id="selectPheedtitle" parameterType = "int" resultType="String">
+		select pheed_title
+		from pheed
+		where pheed_id = #{cnt}
+	
+	</select>
+
+</mapper>
+

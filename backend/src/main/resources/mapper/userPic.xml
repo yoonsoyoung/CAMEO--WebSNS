@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.UserPicDao">
+	<!-- 사진 저장 -->
+	<insert id="insertUserPic" parameterType="UserPic"
+		useGeneratedKeys="true" keyProperty="pheed_id">
+		INSERT INTO
+		user_pic(userEmail,
+		originalName, saveName, size, insertTime)
+		VALUES (#{userEmail},
+		#{originalName}, #{saveName}, #{size}, NOW())
+	</insert>
+	<!-- 사진 수정 -->
+	<update id="updateUserPic" parameterType="UserPic">
+		UPDATE user_pic SET
+		originalName = #{originalName},
+		saveName = #{saveName}
+		WHERE userEmail = #{userEmail}
+	</update>
+	<!-- 사진 삭제 -->
+	<update id="deleteUserPic" parameterType="String">
+		UPDATE user_pic SET
+		deleteYn = 'Y',
+		deleteTime = NOW()
+		WHERE userEmail = #{userEmail}
+	</update>
+
+	<!-- 사진 조회 -->
+	<select id="getUserPic" parameterType="String"
+		resultType="UserPic">
+		SELECT userPicId, userEmail, originalName, saveName, size
+		FROM user_pic
+		WHERE
+		userEmail = #{userEmail}
+		AND deleteYn = 'N'
+	</select>
+</mapper>

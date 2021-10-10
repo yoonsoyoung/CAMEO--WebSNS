@@ -1,0 +1,13 @@
+#header a {
+	text-decoration: none;
+}
+
+#header #headerForm {
+	position: absolute;
+	width: 1440px;
+	height: 111px;
+	left: 0px;
+	top: 0px;
+
+	background: rgba(166, 119, 78, 0.5);
+}

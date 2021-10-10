@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.PheedPicDao">
+
+	<sql id="attachColumns">
+		  pheedPicId
+		, pheedId
+		, originalName
+		, saveName
+		, size
+		, deleteYn
+		, insertTime
+		, deleteTime
+	</sql>
+
+	<insert id="insertPic" parameterType="java.util.List">
+		INSERT INTO pheed_pic (
+			<include refid="attachColumns" />
+		) VALUES
+		<foreach collection="list" item="item" separator=",">
+		(
+			  #{item.pheedPicId}
+			, #{item.pheedId}
+			, #{item.originalName}
+			, #{item.saveName}
+			, #{item.size}
+			, 'N'
+			, NOW()
+			, NULL
+		)
+		</foreach>
+	</insert>
+
+	<update id="deletePic" parameterType="int">
+		UPDATE pheed_pic
+		SET
+			  deleteYn = 'Y'
+			, deleteTime = NOW()
+		WHERE
+			pheedId = #{pheedId}
+	</update>
+
+	<select id="selectPicList" parameterType="int" resultType="PheedPic">
+		SELECT
+			*
+		FROM
+			pheed_pic
+		WHERE
+			deleteYn = 'N'
+		AND
+			pheedId = #{pheedId}
+	</select>
+
+	<select id="selectPicTotalCount" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			pheed_pic
+		WHERE
+			deleteYn = 'N'
+		AND
+			pheedId = #{pheedId}
+	</select>
+	
+	<update id="undeletePic" parameterType="list">
+	UPDATE pheed_pic
+	SET
+		deleteYn = 'N'
+	WHERE
+		pheedPicId IN
+	<foreach collection="list" item="item" separator="," open="(" close=")">
+		#{item}
+	</foreach>
+	</update>
+	
+	<select id="selectAPic" parameterType="int" resultType="PheedPic"> 
+		SELECT pheedPicId, pheedId, originalName, saveName, size
+		FROM pheed_pic
+		WHERE pheedPicId = #{pheedPicId}
+	</select>
+
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.curation.dao.UserDao">
+
+
+   <!-- 로그인 -->
+   <select id="login" resultType="User" parameterType="User">
+      select *
+      from
+      user
+      where user_id = #{user_id} and user_password = #{user_password}
+   </select>
+
+   <!-- 회원인증 key -->
+   <update id="updateAuthKey" parameterType="map">
+      UPDATE user SET
+      user_authKey = #{user_authKey}
+      WHERE user_email =
+      #{user_email}
+   </update>
+
+   <!-- 회원인증 상태 -->
+   <update id="updateAuthStatus" parameterType="map">
+      UPDATE user SET
+      user_authStatus = true
+      WHERE user_email = #{user_email}
+      AND user_authKey
+      = #{user_authKey}
+   </update>
+
+   <!-- 회원 가입 -->
+   <insert id="insertUser" parameterType="User">
+      INSERT INTO user (user_id,
+      user_email, user_password)
+      VALUES (#{user_id}, #{user_email},
+      #{user_password})
+   </insert>
+
+   <!-- 회원 정보 수정 -->
+   <update id="updateIDUser" parameterType="map">
+      UPDATE user SET user_id
+      =#{user_id}
+      WHERE user_email =
+      #{user_email}
+   </update>
+
+   <!-- 회원 정보 수정 -->
+   <update id="updatePWUser" parameterType="map">
+      UPDATE user SET
+      user_password = #{user_password}
+      WHERE user_email =
+      #{user_email}
+   </update>
+
+   <!-- 회원 탈퇴 -->
+   <delete id="deleteUser" parameterType="String">
+      DELETE FROM user
+      WHERE
+      user_email = #{user_email}
+   </delete>
+
+   <!-- 이메일 중복 체크 -->
+   <select id="emailChk" resultType="int" parameterType="String">
+      SELECT
+      COUNT(*) FROM user
+      WHERE user_email = #{user_email}
+   </select>
+
+   <!-- 아이디 중복 체크 -->
+   <select id="idChk" resultType="int" parameterType="String">
+      SELECT
+      COUNT(*) FROM user
+      WHERE user_id = #{user_id}
+   </select>
+
+   <!-- 회원 정보 조회 -->
+   <select id="getUser" resultType="User" parameterType="String">
+      SELECT *
+      FROM user WHERE user_email = #{user_email}
+   </select>
+
+   <!-- 타 유저 검색 by user_id -->
+   <select id="searchUserById" resultType="User"
+      parameterType="String">
+      SELECT user_id, user_email, user_pic, user_cbti
+      FROM user
+      WHERE
+      user_id LIKE '%${user_id}%'
+      ORDER BY user_id ASC
+   </select>
+
+   <!-- 타 유저 검색 by user_cbti -->
+   <select id="searchUserByCBTI" resultType="User"
+      parameterType="String">
+      SELECT user_id, user_email, user_pic, user_cbti
+      FROM user
+      WHERE
+      user_cbti LIKE '%${user_cbti}%'
+      ORDER BY user_cbti ASC
+   </select>
+
+   <!-- CBTI 저장 -->
+   <update id="saveCBTI" parameterType="map">
+      UPDATE user SET
+      user_cbti =
+      #{user_cbti}
+      WHERE user_email = #{user_email}
+   </update>
+
+   <!-- 유저 프로필 사진 가져오기 -->
+   <select id="getUserPic" parameterType="String"
+      resultType="String">
+      SELECT user_pic
+      FROM user
+      WHERE user_email = #{user_email}
+   </select>
+
+   <!-- 유저 프로필 사진 등록 -->
+   <update id="registerUserPic" parameterType="map">
+      UPDATE user SET
+      user_pic = #{user_pic}
+      WHERE user_email = #{user_email}
+   </update>
+
+   <!-- 유저 프로필 사진 삭제 -->
+   <update id="deleteUserPic" parameterType="String">
+      UPDATE user SET
+      user_pic = "defaultProfileImage.png"
+      WHERE user_email = #{user_email}
+   </update>
+
+   <insert id="insertUserViaSNS" parameterType="map">
+      INSERT INTO
+      oAuthUser(user_id, user_email, user_pic)
+      VALUES(#{user_id},
+      #{user_email},
+      #{user_pic})
+   </insert>
+
+   <update id="updateUserViaSNS" parameterType="map">
+      UPDATE oAuthUser SET
+      user_id = #{user_id},
+      user_pic = #{user_pic}
+      WHERE user_email =
+      #{user_email}
+   </update>
+
+   <select id="searchUserByEmailBySns" resultType="int"
+      parameterType="String">
+      SELECT COUNT(*)
+      FROM oAuthUser
+      WHERE
+      user_email =
+      #{user_email}
+   </select>
+
+   <select id="searchUserByEmail" resultType="int"
+      parameterType="String">
+      SELECT COUNT(*)
+      FROM user
+      WHERE
+      user_email = #{user_email}
+   </select>
+   <!-- 모든 회원의 모든 정보 리스트 -->
+   <!-- <select id="getAllUser" resultType="User" parameterType="String"> SELECT 
+      * FROM user </select> -->
+   <select id="getUserIdByEmail" resultType="String"
+      parameterType="String">
+      SELECT user_id FROM user
+      WHERE user_email = #{user_email}
+   </select>
+</mapper>
+    
