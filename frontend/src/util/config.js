@@ -1,3 +1,3 @@
-const API_BASE_URL = "https://i5c202.p.ssafy.io/cameo";
+const API_BASE_URL = "http://localhost:8080/cameo";
 
 export { API_BASE_URL };
